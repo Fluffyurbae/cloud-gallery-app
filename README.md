@@ -14,29 +14,36 @@ cloud-gallery-app/
 │       ├── App.js
 │       └── index.js
 └── docker-compose.yml
+
 Prasyarat:
-Docker & Docker Compose terinstal
-Memiliki akun AWS dengan:
-Access Key ID
-Secret Access Key
-Bucket S3 yang sudah dibuat
-Region (ap-southeast-1)
-Konfigurasi environment
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_REGION=ap-southeast-1
-S3_BUCKET=your_bucket_name
+- Docker & Docker Compose terinstal
+- MinIO telah terinstal sebagai service melalui Docker Compose
+
+Konfigurasi environment:
+AWS_ACCESS_KEY_ID=minioadmin
+AWS_SECRET_ACCESS_KEY=minioadmin123
+AWS_REGION=us-east-1
+S3_BUCKET=cloud-gallery
+S3_ENDPOINT=http://minio:9000
+
 Cara menjalankan:
 docker compose up --build
 Frontend: http://localhost:3000
 Backend API: http://localhost:5000
+MinIO Console: http://localhost:9090
+
 Akses Aplikasi:
-Upload gambar di frontend
-Gambar akan tersimpan di AWS S3 dan datanya masuk PostgreSQL
+1. Upload gambar di frontend
+2. Gambar akan tersimpan di MinIO dan URL-nya disimpan di PostgreSQL
+
 Pengujian:
-Upload gambar dan cek apakah muncul di galeri
-Periksa bucket S3
-Jalankan docker exec -it <container_backend> psql -U postgres -d gallery lalu SELECT * FROM images;
+- Upload gambar dan cek apakah muncul di galeri
+- Periksa bucket 'cloud-gallery' di MinIO Console
+- Jalankan perintah:
+  docker exec -it <container_backend> psql -U postgres -d gallery
+  lalu:
+  SELECT * FROM images;
+
 Menghentikan Aplikasi:
 docker compose down
 Untuk menghapus volume:
